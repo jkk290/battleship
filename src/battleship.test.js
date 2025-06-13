@@ -2,7 +2,7 @@ import { Ship } from './ship.js';
 import { Gameboard } from './gameboard.js';
 
 let testShip = new Ship(5);
-let board = new Gameboard;
+let testBoard = new Gameboard;
 
 test('Ship hit! Current hit: 1', () => {
     expect(testShip.hit()).toBe(1);
@@ -17,4 +17,11 @@ test('Ship has been sunked!', () => {
     expect(testShip.isSunk()).toBe(true);
 })
 
+test('Ship with length 5 has been place at (1,2)', () => {
+    expect(testBoard.placeShip(1,2,5, 'horizontal')).toBe(true);
+});
+
+test('Coordinate (6,2) is not occupied', () => {
+    expect(testBoard.board[6][2].hasShip).toBe(false);
+});
 

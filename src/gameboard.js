@@ -15,8 +15,29 @@ export class Gameboard {
         }
     }
 
-    placeShip(length) {
-        
+    placeShip(x, y, length, direction) {
+        if ((x + length) > 10 || y + length > 10) {
+            return null;
+        } else if (direction === 'horizontal') {
+            let count = 0;
+
+            while(count < length) {
+                this.board[x + count][y].hasShip = true;
+                count++
+            }
+            
+        } else if (direction === 'vertical') {
+            let count = 0;
+
+            while(count < length) {
+                this.board[x][y + count].hasShip = true;
+                count++
+            }
+        } else {
+            return null;
+        }
+
+        return this.board[x][y].hasShip;
     }
 
     receiveAttack(x, y){
