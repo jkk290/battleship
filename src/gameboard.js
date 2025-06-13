@@ -5,6 +5,8 @@ export class Gameboard {
         this.rows = 10;
         this.columns = 10;
         this.board = [];
+        this.shipCount = 0;
+        this.sunkCount = 0;
 
         for (let i = 0; i < this.rows; i++) {
             this.board[i] = [];
@@ -20,6 +22,7 @@ export class Gameboard {
 
     placeShip(x, y, length, direction) {
         let newShip = new Ship(length);
+        this.shipCount += 1;
 
         if ((x + length) > 10 || y + length > 10) {
             return null;
@@ -51,6 +54,11 @@ export class Gameboard {
     receiveAttack(x, y){
         if (this.board[x][y].hasShip === true) {
             this.board[x][y].ship.hit();
+            
+            if (this.board[x][y].ship.isSunk()) {
+                this.sunkCount += 1;
+            }
+
             return true;
 
         } else if (this.board[x][y].hasShip === false) {
@@ -59,6 +67,16 @@ export class Gameboard {
 
         } else {
             return null;
+
+        }
+    }
+
+    allShipsSunk() {
+        if (this.sunkCount === this.shipCount) {
+            return true;
+
+        } else {
+            return false;
 
         }
     }

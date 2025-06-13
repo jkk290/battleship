@@ -12,12 +12,7 @@ test('Ship is not sunken yet', () => {
     expect(testShip.isSunk()).toBe(false)
 });
 
-test('Ship has been sunked!', () => {
-    testShip.totalHits = 5;
-    expect(testShip.isSunk()).toBe(true);
-})
-
-test('Ship with length 5 has been place at (1,2)', () => {
+test('Ship with length 5 has been placed at (1,2)', () => {
     expect(testBoard.placeShip(1,2,5, 'horizontal')).toBe(true);
 });
 
@@ -32,4 +27,12 @@ test('Coordinate (2,2) was a hit!', () => {
 test('Coordinate (8,9) was a miss!', () => {
     expect(testBoard.receiveAttack(8,9)).toBe(false);
 });
+
+test('1 ship has been sunk', () => {
+    testBoard.receiveAttack(1,2);
+    testBoard.receiveAttack(3,2);
+    testBoard.receiveAttack(4,2);
+    testBoard.receiveAttack(5,2);
+    expect(testBoard.sunkCount).toBe(1);
+})
 
