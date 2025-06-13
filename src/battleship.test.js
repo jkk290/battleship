@@ -25,3 +25,11 @@ test('Coordinate (6,2) is not occupied', () => {
     expect(testBoard.board[6][2].hasShip).toBe(false);
 });
 
+test('Coordinate (2,2) was a hit!', () => {
+    expect(testBoard.receiveAttack(2,2)).toBe(true);
+});
+
+test('Coordinate (8,9) was a miss!', () => {
+    expect(testBoard.receiveAttack(8,9)).toBe(false);
+});
+

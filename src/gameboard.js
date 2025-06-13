@@ -1,3 +1,5 @@
+import { Ship } from "./ship";
+
 export class Gameboard {
     constructor() {
         this.rows = 10;
@@ -9,20 +11,25 @@ export class Gameboard {
             for (let j = 0; j < this.columns; j++) {
                 this.board[i][j] = {
                     hasShip: false,
-                    missedShot: undefined
+                    missedShot: undefined,
+                    ship: undefined
                 }
             }
         }
     }
 
     placeShip(x, y, length, direction) {
+        let newShip = new Ship(length);
+
         if ((x + length) > 10 || y + length > 10) {
             return null;
+
         } else if (direction === 'horizontal') {
             let count = 0;
 
             while(count < length) {
                 this.board[x + count][y].hasShip = true;
+                this.board[x + count][y].ship = newShip;
                 count++
             }
             
@@ -31,6 +38,7 @@ export class Gameboard {
 
             while(count < length) {
                 this.board[x][y + count].hasShip = true;
+                this.board[x][y + count].ship = newShip;
                 count++
             }
         } else {
@@ -41,6 +49,18 @@ export class Gameboard {
     }
 
     receiveAttack(x, y){
+        if (this.board[x][y].hasShip === true) {
+            this.board[x][y].ship.hit();
+            return true;
 
+        } else if (this.board[x][y].hasShip === false) {
+            this.board[x][y].missedShot = true;
+            return false;
+
+        } else {
+            return null;
+
+        }
     }
+
 }
