@@ -2,7 +2,8 @@ import { Gameboard } from "./gameboard.js"
 
 export class Player {
     constructor(){
-        this.board = new Gameboard;
+        this.primaryBoard = new Gameboard;
+        this.recordBoard = new Gameboard;
     }
 
 };
