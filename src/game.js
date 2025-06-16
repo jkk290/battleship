@@ -7,43 +7,49 @@ export function playGame() {
   function placeComputerShips() {
     let x = undefined;
     let y = undefined;
+    let direction = undefined;
+    let shipLengths = [5, 4, 3, 3, 2];
 
     function pickCoord() {
-        let num = Math.floor(Math.random() * 11);
+        let num = Math.floor(Math.random() * 10);
 
         return num;
     };
 
-    function pickHorizontal() {
-      let num = Math.random() * 100;
-
-      if (num < 50) {
-        return true;
-
+    function pickDirection() {
+      if (Math.random() < .5) {
+        return 'horizontal';
       } else {
-
-        return false;
-      };
+        return 'vertical';
+      }
 
     };
 
-    while (player2.primaryBoard.shipCount <= 5) {
-      x = pickCoord();
-      y = pickCoord();
+    shipLengths.forEach((length) => {
+      let placed = false;
+
+      while (!placed) {
+        x = pickCoord();
+        y = pickCoord();
+        direction = pickDirection();
+
+        if (player2.primaryBoard.placeShip(x, y, length, direction)) {
+          placed = true;
+        }
+
+      }
+
+    });
 
   };
 
   function selectFirstPlayer() {
 
-      let num = Math.random() * 100;
-
-      if (num < 50) {
+      if (Math.random() < .5) {
         return player1;
-
       } else {
         return player2;
       }
-
   };
 
   let activePlayer = selectFirstPlayer();
@@ -52,7 +58,5 @@ export function playGame() {
 
     
   };
-
-}
 
 };
