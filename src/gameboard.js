@@ -20,20 +20,59 @@ export class Gameboard {
         }
     }
 
-    placeShip(x, y, length, direction) {
+    placeShip(x, y, length, direction) {   
+
+        if (direction === 'horizontal') {
+            if ((x + length) > 10) {
+                return false;
+
+            }
+
+        } else if (direction === 'vertical') {
+            if ((y + length) > 10) {
+                return false;
+
+            }
+        };
+
+        if (direction === 'horizontal') {
+            let count = 0;
+            
+            while(count < length) {
+                if (!this.board[x + count][y].hasShip) {
+                    count++;
+
+                } else {
+                    return false;
+
+                }
+            }
+
+        } else if (direction === 'vertical') {
+            let count = 0;
+            
+            while(count < length) {
+                if (!this.board[x][y + count].hasShip) {
+                    count++;
+
+                } else {
+                    return false;
+
+                }
+            }
+        }
+
         let newShip = new Ship(length);
         this.shipCount += 1;
 
-        if ((x + length) > 10 || y + length > 10) {
-            return null;
-
-        } else if (direction === 'horizontal') {
+        if (direction === 'horizontal') {
             let count = 0;
 
             while(count < length) {
                 this.board[x + count][y].hasShip = true;
                 this.board[x + count][y].ship = newShip;
                 count++
+
             }
             
         } else if (direction === 'vertical') {
@@ -44,10 +83,12 @@ export class Gameboard {
                 this.board[x][y + count].ship = newShip;
                 count++
             }
-        } else {
-            return null;
-        }
 
+        } else {
+            return false;
+            
+        }
+        
         return this.board[x][y].hasShip;
     }
 
