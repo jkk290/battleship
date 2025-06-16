@@ -4,22 +4,55 @@ export function playGame() {
   let player1 = new Player();
   let player2 = new Player();
 
-  let activePlayer = undefined;
+  function placeComputerShips() {
+    let x = undefined;
+    let y = undefined;
 
-  function selectFirstPlayer() {
+    function pickCoord() {
+        let num = Math.floor(Math.random() * 11);
+
+        return num;
+    };
+
+    function pickHorizontal() {
       let num = Math.random() * 100;
 
       if (num < 50) {
-        activePlayer = player1;
+        return true;
 
       } else {
-        activePlayer = player2;
-      }
 
-      return activePlayer;
+        return false;
+      };
+
+    };
+
+    while (player2.primaryBoard.shipCount <= 5) {
+      x = pickCoord();
+      y = pickCoord();
+
   };
 
-  function playRound() {
+  function selectFirstPlayer() {
 
-  }
+      let num = Math.random() * 100;
+
+      if (num < 50) {
+        return player1;
+
+      } else {
+        return player2;
+      }
+
+  };
+
+  let activePlayer = selectFirstPlayer();
+
+  function playRound() { 
+
+    
+  };
+
+}
+
 };
