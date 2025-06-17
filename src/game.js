@@ -17,6 +17,30 @@ export function playGame() {
   let player1 = new Player();
   let player2 = new Player();
 
+  function placePlayerShips() {
+    let x = undefined;
+    let y = undefined;
+    let direction = undefined;
+    let shipLengths = [5, 4, 3, 3, 2];
+
+    shipLengths.forEach((length) => {
+      let placed = false;
+
+      while (!placed) {
+        x = pickCoord();
+        y = pickCoord();
+        direction = pickDirection();
+
+        if (player1.primaryBoard.placeShip(x, y, length, direction)) {
+          placed = true;
+        }
+
+      }
+
+    });
+
+  }
+
   function placeComputerShips() {
     let x = undefined;
     let y = undefined;
