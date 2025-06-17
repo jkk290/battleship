@@ -100,4 +100,22 @@ export function playGame() {
 
   }
 
+  function playerRound(targetX, targetY) {
+
+    player2.primaryBoard.receiveAttack(targetX, targetY);
+    player1.recordBoard[targetX][targetY].wasAttacked = true;
+
+    activePlayer = player2
+
+    return activePlayer;
+  }
+
+  function handlePlayerClick() {
+    // click eventlistener for coords
+    // pass clicked on coords x and y
+
+    playerRound(targetX, targetY);
+
+  }
+
 }
