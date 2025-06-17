@@ -13,7 +13,7 @@ export class Gameboard {
             for (let j = 0; j < this.columns; j++) {
                 this.board[i][j] = {
                     hasShip: false,
-                    missedShot: undefined,
+                    wasAttacked: false,
                     ship: undefined
                 }
             }
@@ -95,6 +95,7 @@ export class Gameboard {
     receiveAttack(x, y){
         if (this.board[x][y].hasShip === true) {
             this.board[x][y].ship.hit();
+            this.board[x][y].wasAttacked = true;
             
             if (this.board[x][y].ship.isSunk()) {
                 this.sunkCount += 1;
@@ -103,7 +104,7 @@ export class Gameboard {
             return true;
 
         } else if (this.board[x][y].hasShip === false) {
-            this.board[x][y].missedShot = true;
+            this.board[x][y].wasAttacked = true;
             return false;
 
         } else {

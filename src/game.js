@@ -1,5 +1,18 @@
 import { Player } from "./player.js"
 
+function pickCoord() {
+  return Math.floor(Math.random() * 10);
+}
+
+function pickDirection() {
+  if (Math.random() < .5) {
+    return 'horizontal';
+  } else {
+    return 'vertical';
+  }
+
+}
+
 export function playGame() {
   let player1 = new Player();
   let player2 = new Player();
@@ -9,21 +22,6 @@ export function playGame() {
     let y = undefined;
     let direction = undefined;
     let shipLengths = [5, 4, 3, 3, 2];
-
-    function pickCoord() {
-        let num = Math.floor(Math.random() * 10);
-
-        return num;
-    };
-
-    function pickDirection() {
-      if (Math.random() < .5) {
-        return 'horizontal';
-      } else {
-        return 'vertical';
-      }
-
-    };
 
     shipLengths.forEach((length) => {
       let placed = false;
@@ -41,22 +39,41 @@ export function playGame() {
 
     });
 
-  };
+  }
 
   function selectFirstPlayer() {
 
-      if (Math.random() < .5) {
-        return player1;
-      } else {
-        return player2;
-      }
-  };
+    if (Math.random() < .5) {
+      return player1;
+    } else {
+      return player2;
+    }
+  }
 
   let activePlayer = selectFirstPlayer();
 
-  function playRound() { 
+  function computerRound() {
+    let compTargetX = undefined;
+    let compTargetY = undefined;
+    let shotSuccessful = false;
 
-    
-  };
+    while (!shotSuccessful) {
+      compTargetX = pickCoord();
+      compTargetY = pickCoord();
 
-};
+      let compTarget = player2.recordBoard[compTargetX][compTargetY];
+
+      if (!compTarget.wasAttacked) {
+        player1.primaryBoard.receiveAttack(compTargetX, compTargetY);
+        player2.recordBoard[compTargetX][compTargetY].wasAttacked = true;
+        shotSuccessful = true;
+      }
+
+    }
+
+    activePlayer = player1
+    return activePlayer;
+
+  }
+
+}
