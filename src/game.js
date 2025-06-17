@@ -1,5 +1,9 @@
 import { Player } from "./player.js"
 
+let player1;
+let player2;
+let activePlayer;
+
 function pickCoord() {
   return Math.floor(Math.random() * 10);
 }
@@ -10,133 +14,79 @@ function pickDirection() {
   } else {
     return 'vertical';
   }
+}
 
+function placeShips(player) {
+  let shipLengths = [5, 4, 3, 3, 2];
+
+  shipLengths.forEach((length) => {
+    let placed = false;
+
+    while (!placed) {
+      let x = pickCoord();
+      let y = pickCoord();
+      let direction = pickDirection();
+
+      if (player.primaryBoard.placeShip(x, y, length, direction)) {
+        placed = true;
+      }
+    }
+  });
+}
+
+function selectFirstPlayer() {
+  if (Math.random() < .5) {
+    return player1;
+  } else {
+    return player2;
+  }
+}
+
+function switchPlayer() {
+  activePlayer = activePlayer === player1 ? player2 : player1;
+  return activePlayer
+}
+
+export function initializeGame(){
+  player1 = new Player();
+  player2 = new Player();
+
+  placeShips(player1);
+  placeShips(player2);
+
+  activePlayer = selectFirstPlayer();
 }
 
 export function playGame() {
-  let player1 = new Player();
-  let player2 = new Player();
+  initializeGame();
 
-  function placePlayerShips() {
-    let x = undefined;
-    let y = undefined;
-    let direction = undefined;
-    let shipLengths = [5, 4, 3, 3, 2];
+}
 
-    shipLengths.forEach((length) => {
-      let placed = false;
+export function computerRound() {
+  let compTargetX = undefined;
+  let compTargetY = undefined;
+  let shotSuccessful = false;
 
-      while (!placed) {
-        x = pickCoord();
-        y = pickCoord();
-        direction = pickDirection();
+  while (!shotSuccessful) {
+    compTargetX = pickCoord();
+    compTargetY = pickCoord();
 
-        if (player1.primaryBoard.placeShip(x, y, length, direction)) {
-          placed = true;
-        }
+    let compTarget = player2.recordBoard[compTargetX][compTargetY];
 
-      }
-
-    });
-
-  }
-
-  function placeComputerShips() {
-    let x = undefined;
-    let y = undefined;
-    let direction = undefined;
-    let shipLengths = [5, 4, 3, 3, 2];
-
-    shipLengths.forEach((length) => {
-      let placed = false;
-
-      while (!placed) {
-        x = pickCoord();
-        y = pickCoord();
-        direction = pickDirection();
-
-        if (player2.primaryBoard.placeShip(x, y, length, direction)) {
-          placed = true;
-        }
-
-      }
-
-    });
-
-  }
-
-  function selectFirstPlayer() {
-
-    if (Math.random() < .5) {
-      return player1;
-    } else {
-      return player2;
+    if (!compTarget.wasAttacked) {
+      player1.primaryBoard.receiveAttack(compTargetX, compTargetY);
+      compTarget.wasAttacked = true;
+      shotSuccessful = true;
     }
   }
 
-  let activePlayer = selectFirstPlayer();
+  switchPlayer();
+}
 
-  function computerRound() {
-    let compTargetX = undefined;
-    let compTargetY = undefined;
-    let shotSuccessful = false;
+export function playerRound(targetX, targetY) {
 
-    while (!shotSuccessful) {
-      compTargetX = pickCoord();
-      compTargetY = pickCoord();
+  player2.primaryBoard.receiveAttack(targetX, targetY);
+  player1.recordBoard[targetX][targetY].wasAttacked = true;
 
-      let compTarget = player2.recordBoard[compTargetX][compTargetY];
-
-      if (!compTarget.wasAttacked) {
-        player1.primaryBoard.receiveAttack(compTargetX, compTargetY);
-        player2.recordBoard[compTargetX][compTargetY].wasAttacked = true;
-        shotSuccessful = true;
-      }
-
-    }
-
-    activePlayer = player1
-    return activePlayer;
-
-  }
-
-  function playerRound(targetX, targetY) {
-
-    player2.primaryBoard.receiveAttack(targetX, targetY);
-    player1.recordBoard[targetX][targetY].wasAttacked = true;
-
-    activePlayer = player2
-
-    return activePlayer;
-  }
-
-  function createCell(boardContainer, boardType) {
-    const container = document.querySelector(boardContainer);
-
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        const cell = document.createElement('div');
-        cell.dataset.x = i;
-        cell.dataset.y = j;
-        cell.classList.add('cell', `${boardType}-cell`);
-
-        if (boardType === 'record') {
-          cell.addEventListener('click', handlePlayerClick)
-        }
-
-        container.appendChild(cell);
-      }
-    }
-
-  }
-
-  function handlePlayerClick(event) {
-
-    let targetX = parseInt(event.target.dataset.x);
-    let targetY = parseInt(event.target.dataset.y);
-
-    playerRound(targetX, targetY);
-
-  }
-
+  switchPlayer();
 }
