@@ -1,11 +1,11 @@
 export class Ship {
-    constructor(length) {
+    constructor(length, startX, startY, direction) {
         this.length = length;
         this.totalHits = 0;
         this.sunk = false;
-        this.startX = undefined;
-        this.startY = undefined;
-        this.direction = undefined;
+        this.startX = startX;
+        this.startY = startY;
+        this.direction = direction;
 
     }
 

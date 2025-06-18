@@ -62,7 +62,7 @@ export class Gameboard {
             }
         }
 
-        let newShip = new Ship(length);
+        let newShip = new Ship(length, x, y, direction);
         this.shipCount += 1;
 
         if (direction === 'horizontal') {
@@ -99,16 +99,15 @@ export class Gameboard {
             
             if (this.board[x][y].ship.isSunk()) {
                 this.sunkCount += 1;
+
+                return 'sunk';
             }
 
-            return true;
+            return 'hit';
 
         } else if (this.board[x][y].hasShip === false) {
             this.board[x][y].wasAttacked = true;
-            return false;
-
-        } else {
-            return null;
+            return 'miss';
 
         }
     }
