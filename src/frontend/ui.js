@@ -34,7 +34,3 @@ export function updateCell(boardContainer, x, y, status) {
   cell.classList.add(status);
 
 }
-
-export function renderDisplay() {
-
-}

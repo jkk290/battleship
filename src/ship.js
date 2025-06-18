@@ -3,6 +3,10 @@ export class Ship {
         this.length = length;
         this.totalHits = 0;
         this.sunk = false;
+        this.startX = undefined;
+        this.startY = undefined;
+        this.direction = undefined;
+
     }
 
     hit() {
@@ -17,6 +21,20 @@ export class Ship {
         } else {
             return this.sunk;
         }
+    }
+
+    getCoordinates() {
+      let shipCoordinates = [];
+
+      for(let i = 0; i < this.length; i++) {
+        if (this.direction === 'horizontal') {
+          shipCoordinates.push({x: this.startX + i, y: this.startY})
+        } else if (this.direction === 'vertical') {
+          shipCoordinates.push({x: this.startX, y: this.startY + i})
+        }
+      }
+
+      return shipCoordinates;
     }
 
 
