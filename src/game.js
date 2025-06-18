@@ -5,7 +5,7 @@ let player1;
 let player2;
 let activePlayer;
 let playerPrimaryContainer = '.player-primary-board-container';
-let playerRecordContainer = '.player-record-board-container'
+let playerRecordContainer = '.player-record-board-container';
 
 function pickCoord() {
   return Math.floor(Math.random() * 10);
@@ -45,11 +45,6 @@ function selectFirstPlayer() {
   }
 }
 
-function switchPlayer() {
-  activePlayer = activePlayer === player1 ? player2 : player1;
-  return activePlayer
-}
-
 export function initializeGame(){
   player1 = new Player();
   player2 = new Player();
@@ -61,10 +56,6 @@ export function initializeGame(){
   placeShips(player2);
 
   activePlayer = selectFirstPlayer();
-}
-
-export function playGame() {
-  initializeGame();
 
   if (activePlayer === player2) {
     computerRound();
@@ -92,11 +83,8 @@ export function computerRound() {
       if (compTargetStatus.status === 'sunk') {
         updateSunkShip(playerPrimaryContainer, compTargetStatus.ship);
       }
-
-      }
+    }
   }
-
-  switchPlayer();
 }
 
 export function playerRound(targetX, targetY) {
@@ -108,6 +96,4 @@ export function playerRound(targetX, targetY) {
   if (playerTargetStatus.status === 'sunk') {
     updateSunkShip(playerRecordContainer, playerTargetStatus.ship);
   }
-
-  switchPlayer();
 }
