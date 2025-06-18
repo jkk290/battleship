@@ -20,11 +20,21 @@ export function createCell(boardContainer, boardType) {
 
 }
 
-export function handlePlayerClick(event) {
+function handlePlayerClick(event) {
 
   let targetX = parseInt(event.target.dataset.x);
   let targetY = parseInt(event.target.dataset.y);
 
   playerRound(targetX, targetY);
+
+}
+
+export function updateCell(boardContainer, x, y, status) {
+  const cell = document.querySelector(`${boardContainer}[data-x="${x}"][data-y="${y}"]`)
+  cell.classList.add(status);
+
+}
+
+export function renderDisplay() {
 
 }

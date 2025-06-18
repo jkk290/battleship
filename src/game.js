@@ -1,4 +1,5 @@
 import { Player } from "./player.js"
+import { createCell } from './frontend/ui.js'
 
 let player1;
 let player2;
@@ -51,6 +52,9 @@ export function initializeGame(){
   player1 = new Player();
   player2 = new Player();
 
+  createCell('.player-primary-board-container', 'primary');
+  createCell('.player-record-board-container', 'record');
+
   placeShips(player1);
   placeShips(player2);
 
@@ -59,6 +63,10 @@ export function initializeGame(){
 
 export function playGame() {
   initializeGame();
+
+  if (activePlayer === player2) {
+    computerRound();
+  }
 
 }
 
