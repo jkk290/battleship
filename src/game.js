@@ -1,9 +1,11 @@
 import { Player } from "./player.js"
-import { createCell } from './frontend/ui.js'
+import { createCell, updateCell, updateSunkShip } from './frontend/ui.js'
 
 let player1;
 let player2;
 let activePlayer;
+let playerPrimaryContainer = '.player-primary-board-container';
+let playerRecordContainer = '.player-record-board-container'
 
 function pickCoord() {
   return Math.floor(Math.random() * 10);
@@ -52,8 +54,8 @@ export function initializeGame(){
   player1 = new Player();
   player2 = new Player();
 
-  createCell('.player-primary-board-container', 'primary');
-  createCell('.player-record-board-container', 'record');
+  createCell(playerPrimaryContainer, 'primary');
+  createCell(playerRecordContainer, 'record');
 
   placeShips(player1);
   placeShips(player2);
@@ -82,10 +84,16 @@ export function computerRound() {
     let compTarget = player2.recordBoard[compTargetX][compTargetY];
 
     if (!compTarget.wasAttacked) {
-      player1.primaryBoard.receiveAttack(compTargetX, compTargetY);
+      let compTargetStatus = player1.primaryBoard.receiveAttack(compTargetX, compTargetY);
       compTarget.wasAttacked = true;
       shotSuccessful = true;
-    }
+      updateCell(playerPrimaryContainer, compTargetX, compTargetY, compTargetStatus);
+
+      if (compTargetStatus.status === 'sunk') {
+        updateSunkShip(playerPrimaryContainer, compTargetStatus.ship);
+      }
+
+      }
   }
 
   switchPlayer();
@@ -93,8 +101,13 @@ export function computerRound() {
 
 export function playerRound(targetX, targetY) {
 
-  player2.primaryBoard.receiveAttack(targetX, targetY);
+  let playerTargetStatus = player2.primaryBoard.receiveAttack(targetX, targetY);
   player1.recordBoard[targetX][targetY].wasAttacked = true;
+  updateCell(playerRecordContainer, targetX, targetY, playerTargetStatus);
+
+  if (playerTargetStatus.status === 'sunk') {
+    updateSunkShip(playerRecordContainer, playerTargetStatus.ship);
+  }
 
   switchPlayer();
 }

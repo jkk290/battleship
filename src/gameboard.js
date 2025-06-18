@@ -100,7 +100,7 @@ export class Gameboard {
             if (this.board[x][y].ship.isSunk()) {
                 this.sunkCount += 1;
 
-                return 'sunk';
+                return {status: 'sunk', ship: this.board[x][y].ship};
             }
 
             return 'hit';

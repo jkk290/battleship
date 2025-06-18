@@ -1,4 +1,5 @@
-import { playerRound } from '../game'
+import { playerRound } from '../game.js'
+import { getCoordinates } from '../ship.js';
 
 export function createCell(boardContainer, boardType) {
   const container = document.querySelector(boardContainer);
@@ -32,5 +33,13 @@ function handlePlayerClick(event) {
 export function updateCell(boardContainer, x, y, status) {
   const cell = document.querySelector(`${boardContainer}[data-x="${x}"][data-y="${y}"]`)
   cell.classList.add(status);
+}
 
+export function updateSunkShip(boardContainer, sunkShip) {
+  let coordinates = getCoordinates(sunkShip);
+
+  coordinates.forEach(coordinate => {
+    updateCell(boardContainer, coordinate.x, coordinate.y, 'sunk');
+  });
+  
 }
