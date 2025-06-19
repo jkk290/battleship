@@ -1,11 +1,11 @@
 import { Player } from "./player.js"
-import { createCell, updateCell, updateSunkShip } from './frontend/ui.js'
+import { createCell, updateCell, updateSunkShip, gameOver, updatePlacedShip } from "./frontend/ui.js";
 
 let player1;
 let player2;
 let activePlayer;
-let playerPrimaryContainer = '.player-primary-board-container';
-let playerRecordContainer = '.player-record-board-container';
+let playerPrimaryContainer = '#player-primary-board-container';
+let playerRecordContainer = '#player-record-board-container';
 
 function pickCoord() {
   return Math.floor(Math.random() * 10);
@@ -30,8 +30,14 @@ function placeShips(player) {
       let y = pickCoord();
       let direction = pickDirection();
 
-      if (player.primaryBoard.placeShip(x, y, length, direction)) {
+      let placedShip = player.primaryBoard.placeShip(x, y, length, direction);
+      if (placedShip.placed) {
         placed = true;
+        if (player === player1) {
+          console.log(`placing ship at cell (${x}, ${y})`)
+          updatePlacedShip(playerPrimaryContainer, placedShip.ship);
+        }
+
       }
     }
   });
@@ -85,6 +91,11 @@ export function computerRound() {
       }
     }
   }
+
+  if (player1.primaryBoard.allShipsSunk() === true) {
+    gameOver();
+  }
+
 }
 
 export function playerRound(targetX, targetY) {
@@ -95,5 +106,11 @@ export function playerRound(targetX, targetY) {
 
   if (playerTargetStatus.status === 'sunk') {
     updateSunkShip(playerRecordContainer, playerTargetStatus.ship);
+  }
+
+  if (player2.primaryBoard.allShipsSunk() === true) {
+    gameOver();
+  } else {
+    computerRound();
   }
 }

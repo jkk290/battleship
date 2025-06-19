@@ -89,7 +89,7 @@ export class Gameboard {
             
         }
         
-        return this.board[x][y].hasShip;
+        return {placed: true, ship: this.board[x][y].ship};
     }
 
     receiveAttack(x, y){
