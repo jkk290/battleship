@@ -5,5 +5,4 @@ export class Player {
         this.primaryBoard = new Gameboard;
         this.recordBoard = new Gameboard;
     }
-
-};
+}

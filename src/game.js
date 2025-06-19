@@ -78,22 +78,23 @@ export function computerRound() {
     compTargetX = pickCoord();
     compTargetY = pickCoord();
 
-    let compTarget = player2.recordBoard[compTargetX][compTargetY];
+    let compTarget = player2.recordBoard.board[compTargetX][compTargetY];
 
     if (!compTarget.wasAttacked) {
       let compTargetStatus = player1.primaryBoard.receiveAttack(compTargetX, compTargetY);
       compTarget.wasAttacked = true;
       shotSuccessful = true;
-      updateCell(playerPrimaryContainer, compTargetX, compTargetY, compTargetStatus);
 
       if (compTargetStatus.status === 'sunk') {
         updateSunkShip(playerPrimaryContainer, compTargetStatus.ship);
+      } else {
+        updateCell(playerPrimaryContainer, compTargetX, compTargetY, compTargetStatus);
       }
     }
   }
 
   if (player1.primaryBoard.allShipsSunk() === true) {
-    gameOver();
+    gameOver('Computer');
   }
 
 }
@@ -101,15 +102,16 @@ export function computerRound() {
 export function playerRound(targetX, targetY) {
 
   let playerTargetStatus = player2.primaryBoard.receiveAttack(targetX, targetY);
-  player1.recordBoard[targetX][targetY].wasAttacked = true;
-  updateCell(playerRecordContainer, targetX, targetY, playerTargetStatus);
+  player1.recordBoard.board[targetX][targetY].wasAttacked = true;
 
   if (playerTargetStatus.status === 'sunk') {
     updateSunkShip(playerRecordContainer, playerTargetStatus.ship);
+  } else {
+    updateCell(playerRecordContainer, targetX, targetY, playerTargetStatus);
   }
 
   if (player2.primaryBoard.allShipsSunk() === true) {
-    gameOver();
+    gameOver('Player');
   } else {
     computerRound();
   }

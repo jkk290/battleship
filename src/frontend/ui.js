@@ -36,8 +36,10 @@ export function updateCell(boardContainer, x, y, status) {
 
 export function updateSunkShip(boardContainer, sunkShip) {
   let coordinates = sunkShip.getCoordinates();
+  console.log(`Ship sunk with coordinates: ${coordinates}`);
 
   coordinates.forEach(coordinate => {
+    console.log(`Setting coordinates as sunk: (${coordinate.x}, ${coordinate.y})`);
     updateCell(boardContainer, coordinate.x, coordinate.y, 'sunk');
   });
 
@@ -51,6 +53,12 @@ export function updatePlacedShip(boardContainer, placedShip) {
   });
 }
 
-export function gameOver() {
+export function gameOver(player) {
+  const message = document.querySelector('#game-message');
+  const cells = document.querySelectorAll('#player-record-board-container .cell');
+  cells.forEach(cell => {
+    cell.classList.add('gameover');
+  })
+  message.textContent = `${player} wins the game!`
 
 }
